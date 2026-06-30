@@ -1,7 +1,19 @@
+using ListaDeCompras.ConsoleApp.Modulos.ModuloCategoria;
+
 namespace ListaDeCompras.ConsoleApp.Compartilhado;
 
 public class TelaPrincipal
 {
+
+    private readonly RepositorioCategoria repositiorioCategoria;
+
+    public TelaPrincipal()
+    {
+        Categoria categoriaTeste = new Categoria("Produtos de Limpeza", CorCategoria.Vermelho);
+
+        repositiorioCategoria = new RepositorioCategoria();
+        repositiorioCategoria.Cadastrar(categoriaTeste);
+    }
     public ITelaOpcoes? ObterOpcaoMenuPrincipal()
     {
         Console.WriteLine("---------------------------------");
@@ -17,7 +29,7 @@ public class TelaPrincipal
         string? opcaoMenuPrincipal = Console.ReadLine()?.ToUpper();
 
         if (opcaoMenuPrincipal == "1")
-            return null;
+            return new TelaCategoria(repositiorioCategoria);
 
         if (opcaoMenuPrincipal == "2")
             return null;
