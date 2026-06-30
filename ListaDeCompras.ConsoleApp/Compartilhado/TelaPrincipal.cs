@@ -1,18 +1,23 @@
 using ListaDeCompras.ConsoleApp.Modulos.ModuloCategoria;
+using ListaDeCompras.ConsoleApp.Modulos.ModuloProduto;
 
 namespace ListaDeCompras.ConsoleApp.Compartilhado;
 
 public class TelaPrincipal
 {
 
-    private readonly RepositorioCategoria repositiorioCategoria;
+    private readonly RepositorioCategoria repositorioCategoria;
+    private readonly RepositorioProduto repositorioProduto;
 
     public TelaPrincipal()
     {
         Categoria categoriaTeste = new Categoria("Produtos de Limpeza", CorCategoria.Vermelho);
 
-        repositiorioCategoria = new RepositorioCategoria();
-        repositiorioCategoria.Cadastrar(categoriaTeste);
+        repositorioCategoria = new RepositorioCategoria();
+        repositorioCategoria.Cadastrar(categoriaTeste);
+        Produto produtoTeste = new Produto("Detergente Ipe", categoriaTeste, 1, UnidadeMedidaProduto.L, 18.50m);
+        repositorioProduto = new RepositorioProduto();
+        repositorioProduto.Cadastrar(produtoTeste);
     }
     public ITelaOpcoes? ObterOpcaoMenuPrincipal()
     {
@@ -29,10 +34,10 @@ public class TelaPrincipal
         string? opcaoMenuPrincipal = Console.ReadLine()?.ToUpper();
 
         if (opcaoMenuPrincipal == "1")
-            return new TelaCategoria(repositiorioCategoria);
+            return new TelaCategoria(repositorioCategoria);
 
         if (opcaoMenuPrincipal == "2")
-            return null;
+            return new TelaProduto(repositorioProduto, repositorioCategoria);
 
         if (opcaoMenuPrincipal == "3")
             return null;
