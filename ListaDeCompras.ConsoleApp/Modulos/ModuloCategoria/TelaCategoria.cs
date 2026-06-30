@@ -127,7 +127,24 @@ public class TelaCategoria : TelaBase, ITelaOpcoes
     {
         // TODO - Não permitir excluir uma categoria caso tenha produtos vinculados
 
+        EntidadeBase[] produtos = repositorioProduto.SelecionarTodos();
 
+        for (int i = 0; i < produtos.Length; i++)
+        {
+            Produto p = (Produto)produtos[i];
+
+            if (p == null)
+                continue;
+
+            if (p.Categoria.Id == idRegistro)
+            {
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine($"Existe(m) produto(s) relacionado(s) a essa categoria!");
+                Console.WriteLine("---------------------------------");
+
+                return true;
+            }
+        }
 
         return base.ExistemDependenciasAtivasDoRegistro(idRegistro);
     }
