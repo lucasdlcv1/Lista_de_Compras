@@ -1,24 +1,17 @@
 namespace ListaDeCompras.ConsoleApp.Compartilhado;
 
-public abstract class RepositorioBase
+public abstract class RepositorioBase<TEntidade> where TEntidade : EntidadeBase
 {
-    private EntidadeBase[] registros = new EntidadeBase[100];
+    private readonly List<TEntidade> registros = new List<TEntidade>();
 
-    public void Cadastrar(EntidadeBase novoRegistro)
+    public void Cadastrar(TEntidade novoRegistro)
     {
-        for (int i = 0; i < registros.Length; i++)
-        {
-            if (registros[i] == null)
-            {
-                registros[i] = novoRegistro;
-                break;
-            }
-        }
+        registros.Add(novoRegistro);
     }
 
-    public bool Editar(int idSelecionado, EntidadeBase entidadeAtualizada)
+    public bool Editar(int idSelecionado, TEntidade entidadeAtualizada)
     {
-        EntidadeBase? entidadeSelecionada = SelecionarPorId(idSelecionado);
+        TEntidade? entidadeSelecionada = SelecionarPorId(idSelecionado);
 
         if (entidadeSelecionada == null)
             return false;
@@ -30,40 +23,27 @@ public abstract class RepositorioBase
 
     public bool Excluir(int idSelecionado)
     {
-        for (int i = 0; i < registros.Length; i++)
-        {
-            EntidadeBase o = registros[i];
+        TEntidade? entidadeSelecionada = SelecionarPorId(idSelecionado);
 
-            if (o == null)
-                continue;
+        if (entidadeSelecionada == null)
+            return false;
 
-            if (o.Id == idSelecionado)
-            {
-                registros[i] = null;
-                return true;
-            }
-        }
-
-        return false;
+        registros.Remove(entidadeSelecionada);
+        return true;
     }
 
-    public EntidadeBase? SelecionarPorId(int idSelecionado)
+    public TEntidade? SelecionarPorId(int idSelecionado)
     {
-        for (int i = 0; i < registros.Length; i++)
+        foreach (TEntidade entidade in registros)
         {
-            EntidadeBase o = registros[i];
-
-            if (o == null)
-                continue;
-
-            if (o.Id == idSelecionado)
-                return o;
+            if (entidade.Id == idSelecionado)
+                return entidade;
         }
 
         return null;
     }
 
-    public EntidadeBase[] SelecionarTodos()
+    public List<TEntidade> SelecionarTodos()
     {
         return registros;
     }

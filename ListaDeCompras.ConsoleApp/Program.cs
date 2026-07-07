@@ -3,6 +3,7 @@ using ListaDeCompras.ConsoleApp.Modulos.ModuloListaCompras;
 
 TelaPrincipal telaPrincipal = new TelaPrincipal();
 
+
 while (true)
 {
     ITelaOpcoes? telaSelecionada = telaPrincipal.ObterOpcaoMenuPrincipal();
@@ -17,7 +18,7 @@ while (true)
         if (opcaoMenuInterno == "S")
             break;
 
-        if (telaSelecionada is TelaBase telaBase)
+        if (telaSelecionada is ITelaCrud telaBase)
         {
             if (opcaoMenuInterno == "1")
                 telaBase.Cadastrar();

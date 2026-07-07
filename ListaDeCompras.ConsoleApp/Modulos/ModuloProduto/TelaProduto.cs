@@ -3,7 +3,7 @@ using ListaDeCompras.ConsoleApp.Modulos.ModuloCategoria;
 
 namespace ListaDeCompras.ConsoleApp.Modulos.ModuloProduto;
 
-public class TelaProduto : TelaBase, ITelaOpcoes
+public class TelaProduto : TelaBase<Produto>, ITelaOpcoes, ITelaCrud
 {
     private readonly RepositorioProduto repositorioProduto;
     private readonly RepositorioCategoria repositorioCategoria;
@@ -30,14 +30,10 @@ public class TelaProduto : TelaBase, ITelaOpcoes
             "Id", "Nome", "Categoria", "Unidade", "Preço Aproximado"
         );
 
-        EntidadeBase[] registros = repositorioProduto.SelecionarTodos();
+        List<Produto> registros = repositorioProduto.SelecionarTodos();
 
-        for (int i = 0; i < registros.Length; i++)
+        foreach (Produto p in registros)
         {
-            Produto p = (Produto)registros[i];
-
-            if (p == null)
-                continue;
 
             Console.WriteLine(
                 "{0, -7} | {1, -20} | {2, -20} | {3, -10} | {4, -17}",
@@ -57,7 +53,7 @@ public class TelaProduto : TelaBase, ITelaOpcoes
         }
     }
 
-    protected override EntidadeBase ObterDadosCadastrais()
+    protected override Produto ObterDadosCadastrais()
     {
         Console.Write("Informe o nome do produto: ");
         string? nome = Console.ReadLine();
@@ -142,16 +138,14 @@ public class TelaProduto : TelaBase, ITelaOpcoes
     }
 
     protected override bool ExisteRegistroComInformacoesExclusivas(
-        EntidadeBase entidade, int? idIgnorado = null)
+        Produto entidade, int? idIgnorado = null)
     {
-        Produto produto = (Produto)entidade;
+        Produto produto = entidade;
 
-        EntidadeBase[] produtos = repositorioProduto.SelecionarTodos();
+        List<Produto> produtos = repositorioProduto.SelecionarTodos();
 
-        for (int i = 0; i < produtos.Length; i++)
+        foreach (Produto p in produtos)
         {
-            Produto p = (Produto)produtos[i];
-
             if (p == null)
                 continue;
 
@@ -179,12 +173,10 @@ public class TelaProduto : TelaBase, ITelaOpcoes
             "Id", "Nome", "Cor"
         );
 
-        EntidadeBase[] registros = repositorioCategoria.SelecionarTodos();
+        List<Categoria> categorias = repositorioCategoria.SelecionarTodos();
 
-        for (int i = 0; i < registros.Length; i++)
+        foreach (Categoria c in categorias)
         {
-            Categoria c = (Categoria)registros[i];
-
             if (c == null)
                 continue;
 
